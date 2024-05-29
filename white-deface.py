@@ -91,15 +91,19 @@ def white(target_url, file_name):
 
 def main():
     parser = argparse.ArgumentParser(description='Webdav vulnerability exploit')
-    parser.add_argument('-t', '--target', help='Target URL', required=True)
-    parser.add_argument('-f', '--file', help='File name', required=True)
+    parser.add_argument('-t', '--target', help='Target URLs list file name', required=True)
+    parser.add_argument('-f', '--file', help='File name to upload', required=True)
     args = parser.parse_args()
 
-    target_url = args.target
+    target_file = args.target
     file_name = args.file
 
     print(banner)
-    white(target_url, file_name)
+    with open(target_file, 'r') as f:
+        target_urls = [line.strip() for line in f.readlines()]
+
+    for target_url in target_urls:
+        white(target_url, file_name)
 
 if __name__ == "__main__":
     main()
